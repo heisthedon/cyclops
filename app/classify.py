@@ -46,16 +46,19 @@ class Classify(Resource):
         imgOutput = imgResize.resize(response.content, args.imageCrop.lower())
         resizeTimeElapsed = (time.clock() - start)
 
-        cmd = "tensorflow/label_image/label_image --graph=%s.pb --labels=%s.txt --output_layer=final_result --image=%s" %(args.graph, args.graph, imgOutput)
-        print cmd
+        start = time.clock()
+        cmd = "tensorflow/label_image/label_image --graph=tensorflow/graph/%s.pb --labels=tensorflow/graph/%s.txt --output_layer=final_result --image=%s" %(args.graph, args.graph, imgOutput)
         return_code = subprocess.call(cmd, shell=True)
+        classifyTimeElapsed = (time.clock() - start)
 
         return {
             'downloadImageSize': len(response.content),
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutput,
-            'classifyReturnCode': return_code
+            'classifyReturnCode': return_code,
+            'classifyCmd': cmd,
+            'classifyTimeElapsedMs': classifyTimeElapsed * 1000
         }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
