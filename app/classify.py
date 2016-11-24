@@ -54,7 +54,8 @@ class Classify(Resource):
                 , "--labels=tensorflow/graph/%s.txt" %(args.graph)
                 , "--output_layer=final_result"
                 , "--image=%s" %(imgOutput)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        (output, err) = proc.communicate()
         classifyTimeElapsed = (time.clock() - start)
 
         postEnd = time.clock()
