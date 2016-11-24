@@ -1,5 +1,6 @@
 import requests
 import time
+import subprocess
 
 from flask_restful import Resource, Api, reqparse
 from app import app
@@ -45,10 +46,13 @@ class Classify(Resource):
         imgResize.resize(response.content, args.imageCrop.lower())
         resizeTimeElapsed = (time.clock() - start)
 
+        return_code = subprocess.call("echo Hello World", shell=True)
+
         return {
             'downloadImageSize': len(response.content),
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
-            'resizeTimeElapsedMs': resizeTimeElapsed * 1000
+            'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
+            'classifyReturnCode': return_code
         }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
