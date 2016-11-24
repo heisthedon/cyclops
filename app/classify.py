@@ -47,7 +47,11 @@ class Classify(Resource):
         resizeTimeElapsed = (time.clock() - start)
 
         start = time.clock()
-        cmd = "tensorflow/label_image/label_image --graph=tensorflow/graph/%s.pb --labels=tensorflow/graph/%s.txt --output_layer=final_result --image=%s" %(args.graph, args.graph, imgOutput)
+        cmd = ["tensorflow/label_image/label_image"
+                , "--graph=tensorflow/graph/%s.pb" %(args.graph)
+                , "--graph=tensorflow/graph/%s.txt" %(args.graph)
+                , "--output_layer=final_result"
+                , "--image=%s" %(imgOutput)]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
 
