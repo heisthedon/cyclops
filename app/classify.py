@@ -35,20 +35,20 @@ class Classify(Resource):
         super(Classify, self).__init__()
 
     def post(self):
-        postStart = time.clock()
+        postStart = time.time()
 
         args = self.reqparse.parse_args()
 
-        start = time.clock()
+        start = time.time()
         response = requests.get(args.imageUrl, stream=True)
-        downloadTimeElapsed = (time.clock() - start)
+        downloadTimeElapsed = (time.time() - start)
 
-        start = time.clock()
+        start = time.time()
         imgResize = ImageResize()
         imgOutput = imgResize.resize(response.content, args.imageCrop.lower())
-        resizeTimeElapsed = (time.clock() - start)
+        resizeTimeElapsed = (time.time() - start)
 
-        start = time.clock()
+        start = time.time()
         cmd = ["tensorflow/label_image/label_image"
                 , "--graph=tensorflow/graph/%s.pb" %(args.graph)
                 , "--labels=tensorflow/graph/%s.txt" %(args.graph)
@@ -56,9 +56,9 @@ class Classify(Resource):
                 , "--image=%s" %(imgOutput)]
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         (output, err) = proc.communicate()
-        classifyTimeElapsed = (time.clock() - start)
+        classifyTimeElapsed = (time.time() - start)
 
-        postEnd = time.clock()
+        postEnd = time.time()
 
         return {
             'downloadImageSize': len(response.content),
