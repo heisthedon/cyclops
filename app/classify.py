@@ -51,7 +51,14 @@ class Classify(Resource):
                 , "--graph=tensorflow/graph/%s.pb" %(args.graph)
                 , "--labels=tensorflow/graph/%s.txt" %(args.graph)
                 , "--output_layer=final_result"
-                , "--image=%s" %(imgOutput)]
+                , "--image=%s" %(imgOutput)
+                , "&"
+                , "tensorflow/label_image/label_image"
+                , "--graph=tensorflow/graph/%s.pb" %(args.graph)
+                , "--labels=tensorflow/graph/%s.txt" %(args.graph)
+                , "--output_layer=final_result"
+                , "--image=%s" %(imgOutput)          
+               ]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
 
