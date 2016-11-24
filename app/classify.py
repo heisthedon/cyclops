@@ -12,7 +12,6 @@ api = Api(app)
 class Classify(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('v', type = int, location = 'args')
 
         self.reqparse.add_argument('graph',
             type = str,
@@ -29,8 +28,8 @@ class Classify(Resource):
         self.reqparse.add_argument('imageCrop',
             type = str,
             required = False,
-            default = "",
-            help = 'Right | Left',
+            default = "none",
+            help = 'right | left | none',
             location = 'json')
 
         super(Classify, self).__init__()
@@ -56,18 +55,15 @@ class Classify(Resource):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
 
-        outputJson = json.loads(output)
-
-        print output
-
         return {
             'downloadImageSize': len(response.content),
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutput,
-            'classifyOutput': outputJson,
+            'classifyOutput': json.loads(output),
             'classifyCmd': cmd,
-            'classifyTimeElapsedMs': classifyTimeElapsed * 1000
+            'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
+            'totalTimeElapsedMs': (downloadTimeElapsed + resizeTimeElapsed + classifyTimeElapsed)*1000
         }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
