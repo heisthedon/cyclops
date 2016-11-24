@@ -68,8 +68,7 @@ class Classify(Resource):
             'classifyOutput': json.loads(output),
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
-            'totalTimeElapsedMs': (downloadTimeElapsed + resizeTimeElapsed + classifyTimeElapsed)*1000,
-            'totalTimeElapsed': (postEnd - postStart)
+            'totalTimeElapsedMs': (postEnd - postStart)
         }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
