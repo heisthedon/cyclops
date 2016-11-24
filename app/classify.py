@@ -43,15 +43,18 @@ class Classify(Resource):
 
         start = time.clock()
         imgResize = ImageResize()
-        imgResize.resize(response.content, args.imageCrop.lower())
+        imgOutput = imgResize.resize(response.content, args.imageCrop.lower())
         resizeTimeElapsed = (time.clock() - start)
 
-        return_code = subprocess.call("echo Hello World", shell=True)
+        cmd = "tensorflow/label_image/label_image --graph=%s.pb --labels=%s.txt --output_layer=final_result --image=%s" %(args.graph, args.graph, imgOutput)
+        print cmd
+        return_code = subprocess.call(cmd, shell=True)
 
         return {
             'downloadImageSize': len(response.content),
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
+            'resizeImagePath': imgOutput,
             'classifyReturnCode': return_code
         }
 
