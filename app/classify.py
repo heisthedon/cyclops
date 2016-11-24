@@ -1,6 +1,7 @@
 import requests
 import time
 import subprocess
+import json
 
 from flask_restful import Resource, Api, reqparse
 from app import app
@@ -55,6 +56,8 @@ class Classify(Resource):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
 
+        outputJson = json.loads(output)
+
         print output
 
         return {
@@ -62,7 +65,7 @@ class Classify(Resource):
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutput,
-            'classifyOutput': output,
+            'classifyOutput': outputJson,
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000
         }
