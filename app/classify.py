@@ -48,7 +48,7 @@ class Classify(Resource):
 
         start = time.clock()
         cmd = "tensorflow/label_image/label_image --graph=tensorflow/graph/%s.pb --labels=tensorflow/graph/%s.txt --output_layer=final_result --image=%s" %(args.graph, args.graph, imgOutput)
-        return_code = subprocess.call(cmd, shell=True)
+        output = subprocess.Popen(["echo", "myarg"], stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
 
         return {
@@ -56,7 +56,7 @@ class Classify(Resource):
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutput,
-            'classifyReturnCode': return_code,
+            'classifyReturnCode': output,
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000
         }
