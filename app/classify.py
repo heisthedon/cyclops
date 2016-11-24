@@ -1,7 +1,6 @@
-from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
+from app import app
 
-app = Flask(__name__)
 api = Api(app)
 
 class Classify(Resource):
@@ -25,9 +24,6 @@ class Classify(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        return {'hello': args.imageUrl }
+        return {'imageUrl': args.imageUrl }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
-
-if __name__ == '__main__':
-    app.run(debug=True)
