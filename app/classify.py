@@ -35,6 +35,8 @@ class Classify(Resource):
         super(Classify, self).__init__()
 
     def post(self):
+        postStart = time.clock()
+
         args = self.reqparse.parse_args()
 
         start = time.clock()
@@ -52,12 +54,10 @@ class Classify(Resource):
                 , "--labels=tensorflow/graph/%s.txt" %(args.graph)
                 , "--output_layer=final_result"
                 , "--image=%s" %(imgOutput)]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
         classifyTimeElapsed = (time.clock() - start)
+
+        postEnd = time.clock()
 
         return {
             'downloadImageSize': len(response.content),
@@ -67,7 +67,8 @@ class Classify(Resource):
             'classifyOutput': json.loads(output),
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
-            'totalTimeElapsedMs': (downloadTimeElapsed + resizeTimeElapsed + classifyTimeElapsed)*1000
+            'totalTimeElapsedMs': (downloadTimeElapsed + resizeTimeElapsed + classifyTimeElapsed)*1000,
+            'totalTimeElapsed': (postEnd - postStart)
         }
 
 api.add_resource(Classify, '/classify', endpoint = 'classify')
