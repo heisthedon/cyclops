@@ -2,6 +2,7 @@ import requests
 import time
 import subprocess
 import json
+import os
 
 from flask_restful import Resource, Api, reqparse
 from app import app
@@ -57,6 +58,8 @@ class Classify(Resource):
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         (output, err) = proc.communicate()
         classifyTimeElapsed = (time.time() - start)
+
+        os.remove(imgOutput)
 
         postEnd = time.time()
 
