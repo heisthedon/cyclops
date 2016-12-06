@@ -6,7 +6,7 @@ import os
 
 from flask_restful import Resource, Api, reqparse
 from app import app
-from image_resize import ImageResize
+from PIL import Image
 
 api = Api(app)
 
@@ -45,8 +45,8 @@ class Classify(Resource):
         downloadTimeElapsed = (time.time() - start)
 
         start = time.time()
-        imgResize = ImageResize()
-        imgOutput = imgResize.resize(response.content, args.imageCrop.lower())
+        img = Image.open(StringIO(response.content))
+        imgOutput = img.crop(args.imageCrop.lower())
         resizeTimeElapsed = (time.time() - start)
 
         start = time.time()
