@@ -7,6 +7,7 @@ import os
 from flask_restful import Resource, Api, reqparse
 from app import app
 from PIL import Image
+from io import StringIO
 
 api = Api(app)
 
