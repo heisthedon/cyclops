@@ -1,14 +1,12 @@
 import requests
 import time
-import subprocess
 import json
 import os
-import io
-import uuid
 
 from flask_restful import Resource, Api, reqparse
 from app import app
-from PIL import Image
+from image_resize import ImageResize
+from classification import Tensorflow
 
 api = Api(app)
 
@@ -47,37 +45,16 @@ class Classify(Resource):
         downloadTimeElapsed = (time.time() - start)
 
         start = time.time()
-        original = Image.open(io.BytesIO(response.content))
-        width, height = original.size   # Get dimensions
-        top = 0
-        bottom = height
-        if (args.imageCrop.lower() == "left"):
-            left = 0
-            right = width/2
-        elif (args.imageCrop.lower() == "right"):
-            left = width/2
-            right = width
-        else:
-            left = 0
-            right = width
-
-        imagePath = "%s.jpg" %(uuid.uuid1())
-        cropImg = original.crop((left, top, right, bottom))
-        cropImg.save(imagePath)
-
+        imgResize = ImageResize()
+        imgOutputPath = imgResize.resize(response.content, args.imageCrop.lower())
         resizeTimeElapsed = (time.time() - start)
 
         start = time.time()
-        cmd = ["tensorflow/label_image/label_image"
-                , "--graph=tensorflow/graph/%s.pb" %(args.graph)
-                , "--labels=tensorflow/graph/%s.txt" %(args.graph)
-                , "--output_layer=final_result"
-                , "--image=%s" %(imagePath)]
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        (output, err) = proc.communicate()
-        classifyTimeElapsed = (time.time() - start)
 
-        os.remove(imagePath)
+        classifyTimeElapsed = (time.time() - start)
+        classification = Tensorflow()
+        output = classification.execute(args.graph, imgOutputPath)
+        os.remove(imgOutputPath)
 
         postEnd = time.time()
 
@@ -85,7 +62,7 @@ class Classify(Resource):
             'downloadImageSize': len(response.content),
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
-            'resizeImagePath': imagePath,
+            'resizeImagePath': imgOutputPath,
             'classifyOutput': json.loads(output),
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
