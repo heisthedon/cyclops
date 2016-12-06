@@ -1,0 +1,4 @@
+cherrypy
+flask_restful
+requests
+Pillow

@@ -3,14 +3,8 @@ virtualenv --system-site-packages ~/tensorflow
 
 source ~/tensorflow/bin/activate  
 
-#Install dependency
-pip install Pillow
-
-pip install requests
-
-pip install flask_restful
-
-pip install cherrypy
+#Install dependencies
+pip install -r requirements.txt
 
 #Run it
 python server.py
