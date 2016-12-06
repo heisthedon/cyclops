@@ -3,10 +3,18 @@ virtualenv --system-site-packages ~/tensorflow
 
 source ~/tensorflow/bin/activate  
 
-pip install Pillow==2.6.1
+#Install dependency
+pip install Pillow
 
 pip install requests
 
 pip install flask_restful
 
-python run.py
+pip install cherrypy
+
+#Run it
+python server.py
+
+To run in the background:
+
+python server.py &
