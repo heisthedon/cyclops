@@ -21,6 +21,8 @@ EXPOSE 80
 # Set the default directory where CMD will execute
 WORKDIR /cyclops
 
+RUN source ~/env2/bin/activate  
+
 # Set the default command to execute
 # when creating a new container
 # i.e. using CherryPy to serve the application
