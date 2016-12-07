@@ -13,7 +13,7 @@ MAINTAINER Hery
 RUN apt-get update
 
 # Get pip to download and install requirements:
-# RUN pip install -r /cyclops/requirements.txt
+#RUN pip install -r ~/cyclops/requirement.txt
 
 # Expose ports
 EXPOSE 80
@@ -21,7 +21,11 @@ EXPOSE 80
 # Set the default directory where CMD will execute
 WORKDIR /cyclops
 
-RUN source ~/env2/bin/activate  
+RUN git pull origin master
+
+RUN pip install -r requirement.txt
+
+RUN chmod 755 -R .
 
 # Set the default command to execute
 # when creating a new container
