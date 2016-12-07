@@ -1,5 +1,3 @@
-from app import  app
-
 import cherrypy
 
 if __name__ == '__main__':
