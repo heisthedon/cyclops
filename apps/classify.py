@@ -63,7 +63,7 @@ class Classify(Resource):
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutputPath,
-            'classifyCmd': cmd,
+            'classifyOutput': output,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
             'totalTimeElapsedMs': (postEnd - postStart)
         }
