@@ -49,10 +49,10 @@ class Classify(Resource):
         resizeTimeElapsed = (time.time() - start)
 
         start = time.time()
-
-        classifyTimeElapsed = (time.time() - start)
         tf = Tensorflow()
         output = tf.execute(args.graph, imgOutputPath)
+        classifyTimeElapsed = (time.time() - start)
+
         os.remove(imgOutputPath)
 
         postEnd = time.time()
