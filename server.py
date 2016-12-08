@@ -1,8 +1,13 @@
 from apps import app
 
 import cherrypy
+import sys
 
 if __name__ == '__main__':
+    if (len(sys.argv) == 1):
+        port = 8080
+    else:
+        port = int(sys.argv[1:][0])
 
     # Mount the application
     cherrypy.tree.graft(app, "/")
@@ -15,7 +20,7 @@ if __name__ == '__main__':
 
     # Configure the server object
     server.socket_host = "0.0.0.0"
-    server.socket_port = 80
+    server.socket_port = port
     server.thread_pool = 30
 
     # For SSL Support

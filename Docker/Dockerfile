@@ -30,4 +30,4 @@ RUN chmod 755 -R .
 # Set the default command to execute
 # when creating a new container
 # i.e. using CherryPy to serve the application
-CMD python server.py
+CMD python server.py $PORT
