@@ -9,6 +9,7 @@ class Tensorflow:
                 , "--labels=tensorflow/graph/%s.txt" %(graph)
                 , "--output_layer=final_result"
                 , "--image=%s" %(imgOutputPath)]
+        print('Tensorflow cmd: ', cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         (output, err) = proc.communicate()
         return output
