@@ -4,7 +4,7 @@ import json
 import os
 
 from flask_restful import Resource, Api, reqparse
-from app import app
+from apps import app
 from image_resize import ImageResize
 from classification import Tensorflow
 
