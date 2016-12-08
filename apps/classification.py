@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import subprocess
+import json
 
 class Tensorflow:
     def execute(self, graph, imgOutputPath):
@@ -12,4 +13,4 @@ class Tensorflow:
         print('Tensorflow cmd: ', cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         (output, err) = proc.communicate()
-        return output
+        return json.loads(output)

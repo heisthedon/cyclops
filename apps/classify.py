@@ -1,6 +1,5 @@
 import requests
 import time
-import json
 import os
 
 from flask_restful import Resource, Api, reqparse
