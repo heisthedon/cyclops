@@ -52,8 +52,8 @@ class Classify(Resource):
         start = time.time()
 
         classifyTimeElapsed = (time.time() - start)
-        classification = Tensorflow()
-        output = classification.execute(args.graph, imgOutputPath)
+        tf = Tensorflow()
+        output = tf.execute(args.graph, imgOutputPath)
         os.remove(imgOutputPath)
 
         postEnd = time.time()
@@ -63,7 +63,7 @@ class Classify(Resource):
             'downloadTimeElapsedMs': downloadTimeElapsed * 1000,
             'resizeTimeElapsedMs': resizeTimeElapsed * 1000,
             'resizeImagePath': imgOutputPath,
-            'classifyOutput': json.loads(output),
+            'classifyOutput': output,
             'classifyCmd': cmd,
             'classifyTimeElapsedMs': classifyTimeElapsed * 1000,
             'totalTimeElapsedMs': (postEnd - postStart)
