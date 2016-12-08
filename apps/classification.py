@@ -13,4 +13,4 @@ class Tensorflow:
         print('Tensorflow cmd: ', cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         (output, err) = proc.communicate()
-        return json.loads(output)
+        return json.loads(output.decode('utf-8'))
